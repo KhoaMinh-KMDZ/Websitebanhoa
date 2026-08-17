@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng Ký – Hoa Tươi Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../css/style.css" rel="stylesheet" />
+    <style>
+      .auth-page {
+        min-height: 100vh;
+        background: linear-gradient(135deg, var(--primary-ultra) 0%, #fff 60%, var(--primary-light) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 16px;
+      }
+      .auth-card {
+        background: var(--white);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(200,80,106,0.14);
+        width: 100%;
+        max-width: 480px;
+        padding: 44px 40px 36px;
+        border: 1px solid var(--border);
+      }
+      .auth-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 6px;
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark);
+      }
+      .auth-logo .brand-icon {
+        width: 38px; height: 38px;
+        background: var(--primary);
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        color: white;
+        font-size: 1.1rem;
+      }
+      .auth-title {
+        font-family: var(--font-heading);
+        font-size: 1.55rem;
+        font-weight: 700;
+        color: var(--dark);
+        text-align: center;
+        margin-bottom: 4px;
+      }
+      .auth-sub {
+        text-align: center;
+        color: var(--gray);
+        font-size: 0.88rem;
+        margin-bottom: 28px;
+      }
+      .form-group { margin-bottom: 18px; }
+      .input-wrapper {
+        position: relative;
+      }
+      .input-icon {
+        position: absolute;
+        left: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--gray-light);
+        font-size: 0.95rem;
+        pointer-events: none;
+      }
+      .form-control-custom.with-icon {
+        padding-left: 38px;
+      }
+      .toggle-pw {
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--gray);
+        cursor: pointer;
+        font-size: 0.95rem;
+        padding: 0;
+        transition: var(--transition);
+      }
+      .toggle-pw:hover { color: var(--primary); }
+      .form-control-custom.is-invalid {
+        border-color: #d94040;
+        box-shadow: 0 0 0 3px rgba(217,64,64,0.1);
+      }
+      .form-control-custom.is-valid {
+        border-color: var(--green);
+        box-shadow: 0 0 0 3px rgba(74,158,124,0.1);
+      }
+      .btn-submit {
+        width: 100%;
+        padding: 13px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: var(--radius-pill);
+        font-family: var(--font-heading);
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 6px;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+      }
+      .btn-submit:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+      .divider-text {
+        text-align: center;
+        color: var(--gray-light);
+        font-size: 0.8rem;
+        margin: 18px 0;
+        position: relative;
+      }
+      .divider-text::before, .divider-text::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 42%;
+        height: 1px;
+        background: var(--border);
+      }
+      .divider-text::before { left: 0; }
+      .divider-text::after { right: 0; }
+      .auth-switch {
+        text-align: center;
+        font-size: 0.875rem;
+        color: var(--gray);
+      }
+      .auth-switch a {
+        color: var(--primary);
+        font-weight: 600;
+      }
+      .auth-switch a:hover { text-decoration: underline; }
+      .pw-strength {
+        display: flex; gap: 4px;
+        margin-top: 6px;
+      }
+      .pw-strength-bar {
+        flex: 1; height: 4px;
+        border-radius: 99px;
+        background: var(--border);
+        transition: var(--transition);
+      }
+      .pw-strength-bar.active-weak   { background: #e74c3c; }
+      .pw-strength-bar.active-medium { background: #f39c12; }
+      .pw-strength-bar.active-strong { background: var(--green); }
+      .pw-strength-label {
+        font-size: 0.74rem;
+        margin-top: 4px;
+        color: var(--gray);
+      }
+      .alert-custom { display: none; }
+      .alert-custom.show { display: flex; }
+      @media (max-width: 480px) {
+        .auth-card { padding: 32px 22px 28px; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Navbar -->
+    <nav class="navbar-custom" style="position:fixed;width:100%;top:0;z-index:1000;">
+      <div class="container">
+        <div class="navbar-inner">
+          <a href="../WebsiteShopHoa.html" class="navbar-brand-custom">
+            <div class="brand-icon"><i class="bi bi-flower1"></i></div>
+            <span class="brand-text">Hoa Tươi <em>Shop</em></span>
+          </a>
+          <div class="nav-actions ms-auto">
+            <a href="../pages/giohang.html" class="nav-icon-btn" title="Giỏ hàng">
+              <i class="bi bi-bag"></i>
+              <span class="cart-badge" style="display:none;">0</span>
+            </a>
+            <div id="nav-login-area"></div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="auth-page" style="padding-top: 90px;">
+      <div class="auth-card">
+        <!-- Logo -->
+        <div class="auth-logo">
+          <div class="brand-icon"><i class="bi bi-flower1"></i></div>
+          Hoa Tươi <em style="color:var(--primary);font-style:italic">Shop</em>
+        </div>
+
+        <h1 class="auth-title">Tạo Tài Khoản</h1>
+        <p class="auth-sub">Đăng ký để nhận ưu đãi và đặt hoa dễ dàng hơn</p>
+
+        <!-- Alert khu vực thông báo -->
+        <div class="alert-custom alert-error" id="reg-alert">
+          <i class="bi bi-exclamation-circle-fill"></i>
+          <span id="reg-alert-msg">Đã xảy ra lỗi, vui lòng kiểm tra lại.</span>
+        </div>
+        <div class="alert-custom alert-success" id="reg-success">
+          <i class="bi bi-check-circle-fill"></i>
+          <span>Đăng ký thành công! Đang chuyển hướng...</span>
+        </div>
+
+        <!-- Form -->
+        <div class="form-group">
+          <label class="form-label-custom" for="reg-name">Họ và Tên <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrapper">
+            <i class="bi bi-person input-icon"></i>
+            <input type="text" id="reg-name" class="form-control-custom with-icon"
+              placeholder="Nhập họ và tên đầy đủ" autocomplete="name" />
+          </div>
+          <div class="form-error" id="err-name">Vui lòng nhập họ và tên (ít nhất 2 ký tự).</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label-custom" for="reg-email">Email <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrapper">
+            <i class="bi bi-envelope input-icon"></i>
+            <input type="email" id="reg-email" class="form-control-custom with-icon"
+              placeholder="example@email.com" autocomplete="email" />
+          </div>
+          <div class="form-error" id="err-email">Vui lòng nhập email hợp lệ.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label-custom" for="reg-pw">Mật Khẩu <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrapper">
+            <i class="bi bi-lock input-icon"></i>
+            <input type="password" id="reg-pw" class="form-control-custom with-icon"
+              placeholder="Tối thiểu 6 ký tự" autocomplete="new-password"
+              oninput="checkStrength(this.value)" />
+            <button type="button" class="toggle-pw" onclick="togglePw('reg-pw', this)">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+          <div class="pw-strength" id="pw-strength-bars">
+            <div class="pw-strength-bar" id="bar1"></div>
+            <div class="pw-strength-bar" id="bar2"></div>
+            <div class="pw-strength-bar" id="bar3"></div>
+          </div>
+          <div class="pw-strength-label" id="pw-strength-label"></div>
+          <div class="form-error" id="err-pw">Mật khẩu phải có ít nhất 6 ký tự.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label-custom" for="reg-pw2">Xác Nhận Mật Khẩu <span style="color:var(--primary)">*</span></label>
+          <div class="input-wrapper">
+            <i class="bi bi-lock-fill input-icon"></i>
+            <input type="password" id="reg-pw2" class="form-control-custom with-icon"
+              placeholder="Nhập lại mật khẩu" autocomplete="new-password" />
+            <button type="button" class="toggle-pw" onclick="togglePw('reg-pw2', this)">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+          <div class="form-error" id="err-pw2">Mật khẩu xác nhận không khớp.</div>
+        </div>
+
+        <button class="btn-submit" onclick="handleRegister()">
+          <i class="bi bi-person-plus"></i> Đăng Ký Ngay
+        </button>
+
+        <div class="divider-text">hoặc</div>
+        <div class="auth-switch">
+          Đã có tài khoản? <a href="dangnhap.html">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/data.js"></script>
+    <script>
+      /* ===== TOGGLE MẬT KHẨU ===== */
+      function togglePw(id, btn) {
+        const input = document.getElementById(id);
+        const icon = btn.querySelector('i');
+        const isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        icon.className = isHidden ? 'bi bi-eye-slash' : 'bi bi-eye';
+      }
+
+      /* ===== ĐỘ MẠNH MẬT KHẨU ===== */
+      function checkStrength(pw) {
+        const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
+        const label = document.getElementById('pw-strength-label');
+        bars.forEach(b => { b.className = 'pw-strength-bar'; });
+        if (!pw) { label.textContent = ''; return; }
+        let score = 0;
+        if (pw.length >= 6) score++;
+        if (pw.length >= 10) score++;
+        if (/[A-Z]/.test(pw) && /[0-9!@#$%^&*]/.test(pw)) score++;
+        if (score === 1) {
+          bars[0].classList.add('active-weak');
+          label.textContent = 'Yếu'; label.style.color = '#e74c3c';
+        } else if (score === 2) {
+          bars[0].classList.add('active-medium');
+          bars[1].classList.add('active-medium');
+          label.textContent = 'Trung bình'; label.style.color = '#f39c12';
+        } else {
+          bars.forEach(b => b.classList.add('active-strong'));
+          label.textContent = 'Mạnh'; label.style.color = 'var(--green)';
+        }
+      }
+
+      /* ===== VALIDATION ===== */
+      function setFieldState(inputId, errId, isValid, msg = '') {
+        const input = document.getElementById(inputId);
+        const err = document.getElementById(errId);
+        if (isValid) {
+          input.classList.remove('is-invalid'); input.classList.add('is-valid');
+          err.classList.remove('show');
+        } else {
+          input.classList.remove('is-valid'); input.classList.add('is-invalid');
+          if (msg) err.textContent = msg;
+          err.classList.add('show');
+        }
+        return isValid;
+      }
+
+      function validateForm() {
+        const name  = document.getElementById('reg-name').value.trim();
+        const email = document.getElementById('reg-email').value.trim();
+        const pw    = document.getElementById('reg-pw').value;
+        const pw2   = document.getElementById('reg-pw2').value;
+        let valid = true;
+
+        valid &= setFieldState('reg-name',  'err-name',  name.length >= 2,
+          'Vui lòng nhập họ và tên (ít nhất 2 ký tự).');
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        valid &= setFieldState('reg-email', 'err-email', emailRegex.test(email),
+          'Vui lòng nhập email hợp lệ (vd: abc@gmail.com).');
+
+        valid &= setFieldState('reg-pw',    'err-pw',    pw.length >= 6,
+          'Mật khẩu phải có ít nhất 6 ký tự.');
+
+        valid &= setFieldState('reg-pw2',   'err-pw2',   pw === pw2 && pw2 !== '',
+          'Mật khẩu xác nhận không khớp.');
+
+        return !!valid;
+      }
+
+      /* ===== ĐĂNG KÝ ===== */
+      function handleRegister() {
+        const alert = document.getElementById('reg-alert');
+        const success = document.getElementById('reg-success');
+        alert.classList.remove('show');
+        success.classList.remove('show');
+
+        if (!validateForm()) return;
+
+        const name  = document.getElementById('reg-name').value.trim();
+        const email = document.getElementById('reg-email').value.trim().toLowerCase();
+        const pw    = document.getElementById('reg-pw').value;
+
+        // Lấy danh sách tài khoản đã có
+        const accounts = JSON.parse(localStorage.getItem('wbh_accounts') || '[]');
+
+        // Kiểm tra email trùng
+        if (accounts.find(a => a.email === email)) {
+          document.getElementById('reg-alert-msg').textContent = 'Email này đã được đăng ký. Vui lòng dùng email khác.';
+          alert.classList.add('show');
+          document.getElementById('reg-email').classList.add('is-invalid');
+          return;
+        }
+
+        // Lưu tài khoản mới
+        accounts.push({ name, email, password: pw, createdAt: Date.now() });
+        localStorage.setItem('wbh_accounts', JSON.stringify(accounts));
+
+        success.classList.add('show');
+        showToast('Đăng ký thành công! Chào mừng ' + name, 'success');
+
+        // Tự đăng nhập luôn & chuyển trang
+        sessionStorage.setItem('wbh_user', JSON.stringify({ name, email }));
+        setTimeout(() => { window.location.href = '../WebsiteShopHoa.html'; }, 1600);
+      }
+
+      /* ===== ENTER để submit ===== */
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Enter') handleRegister();
+      });
+    </script>
+  </body>
+</html>

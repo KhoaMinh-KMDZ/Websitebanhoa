@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Danh Sách Sản Phẩm – Hoa Tươi Shop</title>
+    <meta
+      name="description"
+      content="Tìm kiếm và chọn lựa bó hoa ưng ý nhất từ danh mục hoa tươi phong phú đa dạng của Hoa Tươi Shop."
+    />
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <!-- CSS EXTERNAL dùng chung -->
+    <link href="../css/style.css" rel="stylesheet" />
+
+    <style>
+      /* Style riêng cho trang danh sách sản phẩm */
+      .search-wrapper {
+        position: relative;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      .search-wrapper i {
+        position: absolute;
+        top: 50%;
+        left: 16px;
+        transform: translateY(-50%);
+        color: var(--gray);
+        font-size: 1.1rem;
+      }
+      .search-input {
+        padding-left: 44px;
+        height: 48px;
+        font-size: 0.95rem;
+        background: var(--white);
+        border: 2px solid var(--border);
+        border-radius: var(--radius-pill);
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+      }
+      .search-input:focus {
+        border-color: var(--primary);
+        box-shadow: var(--shadow-md);
+        outline: none;
+      }
+
+      .filter-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 20px;
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-pill);
+        font-size: 0.88rem;
+        color: var(--text);
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        white-space: nowrap;
+      }
+      .filter-btn:hover,
+      .filter-btn.active {
+        background: var(--primary);
+        color: var(--white);
+        border-color: var(--primary);
+        box-shadow: var(--shadow-md);
+      }
+
+      .sort-select-wrapper {
+        max-width: 220px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+     NAVBAR — Giao diện dùng chung cho toàn dự án
+     ============================================================ -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+      <div class="container">
+        <div class="navbar-inner w-100">
+          <!-- BRAND -->
+          <a class="navbar-brand-custom" href="../WebsiteShopHoa.html">
+            <div class="brand-icon"><i class="bi bi-flower1"></i></div>
+            <span class="brand-text">Hoa Tươi <em>Shop</em></span>
+          </a>
+
+          <!-- HAMBURGER (mobile) -->
+          <button
+            class="navbar-toggler navbar-toggler-custom d-lg-none ms-auto me-2"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavMenu"
+            aria-controls="mainNavMenu"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="bi bi-list"></i>
+          </button>
+
+          <!-- NAV MENU -->
+          <div class="collapse navbar-collapse" id="mainNavMenu">
+            <ul class="nav-menu navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link-custom" href="../WebsiteShopHoa.html">
+                  <i class="bi bi-house"></i> Trang Chủ
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link-custom active" href="sanpham.html">
+                  <i class="bi bi-grid-3x3-gap"></i> Sản Phẩm
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link-custom" href="../WebsiteShopHoa.html#gioi-thieu">
+                  <i class="bi bi-info-circle"></i> Giới Thiệu
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link-custom" href="../WebsiteShopHoa.html#lien-he">
+                  <i class="bi bi-telephone"></i> Liên Hệ
+                </a>
+              </li>
+            </ul>
+
+            <!-- ACTION BUTTONS -->
+            <div class="nav-actions">
+              <!-- Giỏ hàng -->
+              <a href="giohang.html" class="nav-icon-btn" title="Giỏ hàng">
+                <i class="bi bi-bag"></i>
+                <span class="cart-badge" style="display: none">0</span>
+              </a>
+              <!-- Yêu thích -->
+              <a href="#" class="nav-icon-btn" title="Yêu thích">
+                <i class="bi bi-heart"></i>
+              </a>
+              <!-- Đăng nhập / Tên user -->
+              <div id="nav-login-area">
+                <a
+                  href="dangnhap.html"
+                  class="btn-primary-custom"
+                  style="padding: 8px 20px; font-size: 0.84rem"
+                >
+                  <i class="bi bi-person"></i> Đăng nhập
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ============================================================
+     BREADCRUMB & TIÊU ĐỀ TRANG
+     ============================================================ -->
+    <header class="page-header" data-aos="fade-down">
+      <div class="container">
+        <ol class="breadcrumb mb-1 breadcrumb-custom">
+          <li><a href="../WebsiteShopHoa.html">Trang Chủ</a></li>
+          <li><i class="bi bi-chevron-right ms-2 me-2"></i></li>
+          <li class="active text-primary-c font-semibold">Cửa Hàng</li>
+        </ol>
+        <h1 class="font-bold tracking-tight">Danh Sách Sản Phẩm</h1>
+        <p class="text-gray-c text-sm">
+          Khám phá các mẫu hoa tươi tắn rực rỡ sắc màu được yêu thích nhất
+        </p>
+      </div>
+    </header>
+
+    <!-- ============================================================
+     TÌM KIẾM & BỘ LỌC DỰA TRÊN JAVASCRIPT
+     ============================================================ -->
+    <section class="section-py-sm">
+      <div class="container">
+        <!-- Ô TÌM KIẾM VÀ DROPDOWN SẮP XẾP -->
+        <div class="row align-items-center mb-4 g-3" data-aos="fade-up">
+          <div class="col-md-7">
+            <div class="search-wrapper">
+              <i class="bi bi-search"></i>
+              <input
+                type="text"
+                id="search-box"
+                class="form-control search-input"
+                placeholder="Nhập tên hoa bạn muốn tìm..."
+                aria-label="Tìm kiếm sản phẩm"
+              />
+            </div>
+          </div>
+          <div
+            class="col-md-5 d-flex justify-content-md-end justify-content-start"
+          >
+            <div
+              class="d-flex align-items-center gap-2 sort-select-wrapper w-100"
+            >
+              <label
+                for="sort-select"
+                class="form-label mb-0 text-xs text-nowrap font-semibold text-gray-500"
+                >Sắp xếp:</label
+              >
+              <select
+                id="sort-select"
+                class="form-select form-control-custom"
+                style="padding: 6px 12px; font-size: 0.85rem"
+              >
+                <option value="default">Mặc định</option>
+                <option value="price-asc">Giá: Thấp đến Cao</option>
+                <option value="price-desc">Giá: Cao đến Thấp</option>
+                <option value="rating-desc">Đánh giá cao nhất</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- CÁC NÚT LỌC DANH MỤC HOA -->
+        <div
+          class="d-flex gap-2 flex-wrap mb-5 pb-2 border-bottom justify-content-start"
+          id="category-filter-wrap"
+          data-aos="fade-up"
+          data-aos-delay="50"
+        >
+          <button class="filter-btn active" data-category="all">
+            🌈 Tất Cả Hoa
+          </button>
+          <button class="filter-btn" data-category="hoa-tuoi">
+            🌹 Hoa Tươi
+          </button>
+          <button class="filter-btn" data-category="hoa-dip">
+            🎁 Hoa Theo Dịp
+          </button>
+          <button class="filter-btn" data-category="hoa-cuoi">
+            💐 Hoa Cưới
+          </button>
+          <button class="filter-btn" data-category="hoa-gia">🌸 Hoa Giả</button>
+        </div>
+
+        <!-- KẾT QUẢ TÌM KIẾM / SỐ LƯỢNG HOA -->
+        <div
+          class="d-flex justify-content-between align-items-center mb-4 text-xs font-semibold text-gray-c"
+          data-aos="fade-up"
+        >
+          <div id="results-count">Hiển thị tất cả 18 sản phẩm</div>
+          <div id="current-filters-label" class="text-primary-c"></div>
+        </div>
+
+        <!-- GRID DANH SÁCH HOA (RÚT DỮ LIỆU TỪ JS RENDER) -->
+        <div
+          class="row g-4"
+          id="products-grid"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
+          <!-- Các Card sản phẩm sẽ được chèn động ở đây bằng JavaScript -->
+        </div>
+
+        <!-- EMPTY STATE (HIỂN THỊ KHI KHÔNG TÌM THẤY HOA) -->
+        <div
+          id="no-products-state"
+          class="empty-state d-none text-center rounded-custom bg-white border"
+          style="margin-top: 30px"
+        >
+          <i class="bi bi-flower2"></i>
+          <h4>Không tìm thấy sản phẩm phù hợp</h4>
+          <p>
+            Vui lòng đổi từ khóa tìm kiếm hoặc chọn danh mục hoa khác xem sao
+            bạn nhé!
+          </p>
+          <button class="btn-primary-custom mt-3" onclick="resetFilters()">
+            <i class="bi bi-hash"></i> Hiển Thị Tất Cả
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     FOOTER — Giao diện dùng chung cho toàn dự án
+     ============================================================ -->
+    <footer class="footer-custom" id="lien-he">
+      <div class="container">
+        <div class="row g-5">
+          <!-- Cột 1 -->
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-brand">
+              <div class="brand-icon"><i class="bi bi-flower1"></i></div>
+              Hoa Tươi
+              <em style="color: var(--primary); font-style: italic">Shop</em>
+            </div>
+            <p class="footer-desc">
+              Tiệm hoa tươi chất lượng cao tại TP.HCM. Hơn 10 năm phục vụ, hàng
+              nghìn khách hàng tin tưởng. Giao hoa tươi tận nơi, thiết kế theo
+              yêu cầu.
+            </p>
+            <div class="footer-social">
+              <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" title="Instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" title="TikTok"><i class="bi bi-tiktok"></i></a>
+              <a href="#" title="YouTube"><i class="bi bi-youtube"></i></a>
+              <a href="#" title="Zalo"><i class="bi bi-chat-dots"></i></a>
+            </div>
+          </div>
+
+          <!-- Cột 2 -->
+          <div class="col-lg-2 col-md-3 col-6">
+            <h5 class="footer-heading">Liên Kết</h5>
+            <a href="../WebsiteShopHoa.html" class="footer-link"
+              ><i class="bi bi-chevron-right"></i> Trang Chủ</a
+            >
+            <a href="sanpham.html" class="footer-link"
+              ><i class="bi bi-chevron-right"></i> Sản Phẩm</a
+            >
+            <a href="giohang.html" class="footer-link"
+              ><i class="bi bi-chevron-right"></i> Giỏ Hàng</a
+            >
+            <a href="dangnhap.html" class="footer-link"
+              ><i class="bi bi-chevron-right"></i> Đăng Nhập</a
+            >
+            <a href="dangky.html" class="footer-link"
+              ><i class="bi bi-chevron-right"></i> Đăng Ký</a
+            >
+            <a href="admin.html" class="footer-link"
+              ><i class="bi bi-chevron-right"></i> Quản Trị</a
+            >
+          </div>
+
+          <!-- Cột 3 -->
+          <div class="col-lg-2 col-md-3 col-6">
+            <h5 class="footer-heading">Danh Mục</h5>
+            <a href="sanpham.html?cat=hoa-tuoi" class="footer-link"
+              ><i class="bi bi-chevron-right"></i> Hoa Tươi</a
+            >
+            <a href="sanpham.html?cat=hoa-gia" class="footer-link"
+              ><i class="bi bi-chevron-right"></i> Hoa Giả</a
+            >
+            <a href="sanpham.html?cat=hoa-cuoi" class="footer-link"
+              ><i class="bi bi-chevron-right"></i> Hoa Cưới</a
+            >
+            <a href="sanpham.html?cat=hoa-dip" class="footer-link"
+              ><i class="bi bi-chevron-right"></i> Hoa Theo Dịp</a
+            >
+            <a href="sanpham.html" class="footer-link"
+              ><i class="bi bi-chevron-right"></i> Hoa Decor</a
+            >
+          </div>
+
+          <!-- Cột 4 -->
+          <div class="col-lg-4 col-md-6">
+            <h5 class="footer-heading">Liên Hệ</h5>
+            <div class="footer-contact-item">
+              <i class="bi bi-geo-alt-fill"></i>
+              <span>123 Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP.HCM</span>
+            </div>
+            <div class="footer-contact-item">
+              <i class="bi bi-telephone-fill"></i>
+              <span>0909 123 456 (Hotline 7:00 – 21:00)</span>
+            </div>
+            <div class="footer-contact-item">
+              <i class="bi bi-envelope-fill"></i>
+              <span>info@hoatuoishop.vn</span>
+            </div>
+            <div class="footer-contact-item">
+              <i class="bi bi-clock-fill"></i>
+              <span>Mở cửa: 7:00 – 21:00 mỗi ngày, kể cả Chủ Nhật</span>
+            </div>
+            <div
+              style="
+                margin-top: 14px;
+                padding: 12px 16px;
+                background: rgba(200, 80, 106, 0.12);
+                border-radius: 8px;
+                border: 1px solid rgba(200, 80, 106, 0.25);
+              "
+            >
+              <span style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.65)">
+                <i class="bi bi-whatsapp" style="color: #25d366"></i>
+                Nhắn Zalo: <strong style="color: white">0909 123 456</strong> để
+                đặt hàng nhanh!
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="footer-divider" />
+        <p class="footer-bottom">
+          © 2025 Hoa Tươi Shop. Bản quyền thuộc nhóm phát triển. Đề tài:
+          <a href="#">Thiết kế website shop hoa</a>.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Data chung -->
+    <script src="../js/data.js"></script>
+
+    <!-- TRÌNH ĐIỀU KHIỂN JAVASCRIPT CỦA THÀNH VIÊN 2 -->
+<script>
+      AOS.init({ once: true, duration: 680, offset: 60 });
+
+      let currentCategory = "all";
+      let searchKeyword = "";
+      let currentSort = "default";
+
+      // Đọc URL parameter khi tải trang (ví dụ ?cat=hoa-tuoi)
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlCategory = urlParams.get("cat");
+      if (
+        urlCategory &&
+        ["all", "hoa-tuoi", "hoa-dip", "hoa-cuoi", "hoa-gia"].includes(
+          urlCategory,
+        )
+      ) {
+        currentCategory = urlCategory;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Áp dụng class active đúng nút danh mục từ URL parameter
+        const activeBtn = document.querySelector(
+          `.filter-btn[data-category="${currentCategory}"]`,
+        );
+        if (activeBtn) {
+          document
+            .querySelectorAll(".filter-btn")
+            .forEach((b) => b.classList.remove("active"));
+          activeBtn.classList.add("active");
+        }
+
+        // Render sản phẩm lần đầu tiên
+        renderProductListing();
+
+        // Thêm sự kiện tìm kiếm sản phẩm bằng gõ tên hoa (input tự động hiển thị lập tức)
+        const searchInput = document.getElementById("search-box");
+        searchInput.addEventListener("input", (e) => {
+          searchKeyword = e.target.value.trim().toLowerCase();
+          renderProductListing();
+        });
+
+        // Thêm sự kiện lọc bằng cách click vào danh mục
+        const categoryBtns = document.querySelectorAll(".filter-btn");
+        categoryBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            categoryBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentCategory = btn.getAttribute("data-category");
+
+            // Đồng bộ hoá với query parameter (Optionally pushState)
+            const newUrl =
+              window.location.pathname +
+              (currentCategory !== "all" ? `?cat=${currentCategory}` : "");
+            window.history.pushState({ path: newUrl }, "", newUrl);
+
+            renderProductListing();
+          });
+        });
+
+        // Thêm sự kiện sắp xếp sản phẩm
+        const sortSelect = document.getElementById("sort-select");
+        sortSelect.addEventListener("change", (e) => {
+          currentSort = e.target.value;
+          renderProductListing();
+        });
+      });
+
+      // Hàm reset toàn bộ lọc
+      function resetFilters() {
+        document.getElementById("search-box").value = "";
+        searchKeyword = "";
+        currentCategory = "all";
+        currentSort = "default";
+
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document
+          .querySelector('.filter-btn[data-category="all"]')
+          .classList.add("active");
+
+        document.getElementById("sort-select").value = "default";
+
+        window.history.pushState(
+          { path: window.location.pathname },
+          "",
+          window.location.pathname,
+        );
+        renderProductListing();
+      }
+
+      // Hàm render chính danh sách sản phẩm
+      function renderProductListing() {
+        const grid = document.getElementById("products-grid");
+        const resultsCountEl = document.getElementById("results-count");
+        const noProductsState = document.getElementById("no-products-state");
+        const filtersLabel = document.getElementById("current-filters-label");
+
+        if (!grid) return;
+
+        // CẢI TIẾN 1: Gọi hàm getProducts() từ data.js để lấy dữ liệu đồng bộ từ LocalStorage thay vì mảng tĩnh PRODUCTS_DATA
+        const productsSource = typeof getProducts === "function" ? getProducts() : PRODUCTS_DATA;
+
+        // 1. Phục vụ lọc theo danh mục & từ khóa tìm kiếm
+        let items = productsSource.filter((item) => {
+          const matchCategory =
+            currentCategory === "all" || item.category === currentCategory;
+          const matchKeyword =
+            item.name.toLowerCase().includes(searchKeyword) ||
+            item.desc.toLowerCase().includes(searchKeyword);
+          return matchCategory && matchKeyword;
+        });
+
+        // 2. Phục vụ sắp xếp (Sort)
+        if (currentSort === "price-asc") {
+          items.sort((a, b) => a.price - b.price);
+        } else if (currentSort === "price-desc") {
+          items.sort((a, b) => b.price - a.price);
+        } else if (currentSort === "rating-desc") {
+          items.sort((a, b) => b.rating - a.rating);
+        } else {
+          // Default: trả về id ban đầu
+          items.sort((a, b) => a.id - b.id);
+        }
+
+        // Cập nhật nhãn đếm kết quả
+        resultsCountEl.textContent = `Tìm thấy ${items.length} sản phẩm hoa tương thích`;
+
+        // Cập nhật nhãn trạng thái lọc đang dùng
+        let categoryNameText = "";
+        if (currentCategory === "hoa-tuoi")
+          categoryNameText = "Danh mục: Hoa Tươi";
+        else if (currentCategory === "hoa-dip")
+          categoryNameText = "Danh mục: Hoa Theo Dịp";
+        else if (currentCategory === "hoa-cuoi")
+          categoryNameText = "Danh mục: Hoa Cưới";
+        else if (currentCategory === "hoa-gia")
+          categoryNameText = "Danh mục: Hoa Giả";
+        else categoryNameText = "Tất cả danh mục";
+
+        if (searchKeyword) {
+          filtersLabel.innerHTML = `<strong>${categoryNameText}</strong> | Từ khóa: "<em>${escapeHTML(searchKeyword)}</em>"`;
+        } else {
+          filtersLabel.innerHTML = `<strong>${categoryNameText}</strong>`;
+        }
+
+        // 3. Xử lý DOM để chèn card sản phẩm
+        grid.innerHTML = "";
+        if (items.length === 0) {
+          noProductsState.classList.remove("d-none");
+          grid.classList.add("d-none");
+        } else {
+          noProductsState.classList.add("d-none");
+          grid.classList.remove("d-none");
+
+          items.forEach((p, index) => {
+            const stars =
+              "★".repeat(Math.floor(p.rating)) +
+              (p.rating % 1 >= 0.5 ? "½" : "");
+
+            // CẢI TIẾN 2: Chuẩn hóa đường dẫn hình ảnh xử lý lỗi vỡ hình
+            // Nếu ảnh lưu bằng đường dẫn thư mục tĩnh (bắt đầu bằng 'img/'), ta tự động chèn thêm '../' để lùi cấp về gốc.
+            // Nếu là ảnh do admin tải lên dạng chuỗi Base64 ('data:image/...'), giữ nguyên chuỗi.
+            let finalImgPath = p.img;
+            if (finalImgPath && finalImgPath.startsWith("img/")) {
+              finalImgPath = "../" + finalImgPath;
+            }
+
+            grid.innerHTML += `
+              <div class="col-sm-6 col-md-4 col-lg-3 grid-item" id="product-${p.id}">
+                <div class="product-card">
+                  <div class="card-img-wrapper">
+                    <img src="${finalImgPath}" alt="${escapeHTML(p.name)}" loading="lazy">
+                    ${p.badge ? `<span class="card-badge">${p.badge}</span>` : ""}
+                    <div class="card-actions">
+                      <button class="card-action-btn" id="prod-btn-cart-${p.id}" onclick="addToCart(${p.id})" title="Thêm vào giỏ">
+                        <i class="bi bi-cart-plus"></i>
+                      </button>
+                      <button class="card-action-btn" id="prod-btn-wish-${p.id}" onclick="toggleWish(this)" title="Yêu thích">
+                        <i class="bi bi-heart"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="card-body-custom">
+                    <div class="card-cat-label">${escapeHTML(p.categoryLabel || "Hoa")}</div>
+                    <h5 class="card-title-custom">${escapeHTML(p.name)}</h5>
+                    <div style="font-size:0.76rem;color:#e2a93b;margin-bottom:8px;">
+                      ${stars}
+                      <span style="color:var(--gray);margin-left:4px;">(${p.reviews || 0})</span>
+                    </div>
+                    <div class="card-price-row">
+                      <span class="card-price">${formatPrice(p.price)}</span>
+                      ${p.oldPrice ? `<span class="card-price-old">${formatPrice(p.oldPrice)}</span>` : ""}
+                    </div>
+                  </div>
+                  <div class="card-footer-custom">
+                    <a href="chitiet.html?id=${p.id}"
+                      class="btn-outline-custom w-100 justify-content-center"
+                      style="padding:8px;font-size:0.83rem;" id="prod-link-detail-${p.id}">
+                      <i class="bi bi-eye"></i> Xem Chi Tiết
+                    </a>
+                  </div>
+                </div>
+              </div>`;
+          });
+        }
+
+        // Đặt hiệu ứng animation mượt
+        if (typeof AOS !== "undefined") {
+          AOS.refresh();
+        }
+      }
+
+      // Toggle yêu thích
+      function toggleWish(btn) {
+        const icon = btn.querySelector("i");
+        const isWished = icon.classList.contains("bi-heart-fill");
+        icon.className = isWished ? "bi bi-heart" : "bi bi-heart-fill";
+        btn.style.color = isWished ? "" : "var(--primary)";
+        showToast(
+          isWished ? "Đã bỏ yêu thích" : "Đã thêm vào yêu thích 💕",
+          "info",
+        );
+      }
+
+      // Hàm diệt XSS cho keyword bảo vệ form
+      function escapeHTML(str) {
+        if (!str) return "";
+        return str.replace(
+          /[&<>'"]/g,
+          (tag) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              "'": "&#39;",
+              '"': "&quot;",
+            })[tag] || tag,
+        );
+      }
+    </script>
+  </body>
+</html>
